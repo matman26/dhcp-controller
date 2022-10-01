@@ -1,0 +1,38 @@
+[
+    {
+        "dhcp": {
+            "dhcp-pools": {
+                "OFFICE": {
+                    "default-gateway": "10.251.0.254",
+                    "domain-name": "OFFICE",
+                    "lease-time": 25,
+                    "network": {
+                        "address": "10.251.0.0",
+                        "mask": "255.255.255.0"
+                    },
+                    "subnet": {
+                        "prefix-length": 24
+                    }
+                },
+                "WAREHOUSE": {
+                    "domain-name": "WAREHOUSE",
+                    "lease-time": 365
+		},
+                "CORPORATE": {
+                    "domain-name": "CORPORATE",
+                    "lease-time": 25,
+		    "default-gateway" : "192.168.25.100",
+                    "network": {
+                        "address": "10.252.0.0",
+                        "mask": "255.255.255.0"
+                    }
+		},
+		"UTICA": {
+		 "domain-name": "UTICA",
+		 "lease-time": 10
+		}
+            }
+        }
+    }
+]
+

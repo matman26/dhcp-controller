@@ -1,0 +1,72 @@
+module dhcp {
+  namespace "http://pnc.controller.com/dhcp";
+  prefix "dhpcd";
+
+  import ietf-inet-types {
+    prefix "inet";
+  }
+
+  organization "Programmatic Network Controller";
+  contact "a.matheus26@hotmail.com";
+  description
+      "This YANG Model is used as a reference for the PNC DHCP Config Case";
+
+  revision 2022-09-30 {
+      description "Initial revision.";
+  }
+
+  container dhcp {
+    list dhcp-pool {
+      key pool-name;
+
+      leaf pool-name {
+        type string;
+	description "Unique identifier for DHCP Pool";
+      }
+
+      container network {
+        leaf address {
+          type inet:ipv4-address;
+	  description "IPv4 Network Address";
+        }
+
+        leaf mask {
+          type inet:ipv4-address;
+	  description "IPv4 Subnet Mask";
+        }
+      }
+
+      container subnet {
+        leaf prefix-length {
+          type uint16 {
+            range "1..31";
+          }
+        }
+      }
+
+      leaf lease-time {
+        type union {
+	  type uint16 {
+	    range "0-365";
+	  }
+	  type enumeration {
+	    enum "infinite";
+	  }
+	}
+      }
+
+      leaf default-gateway {
+        type union {
+	  type inet:ipv4-address;
+	  type string;
+	}
+	description "IPv4 Address or Hostname for Default Gateway";
+      }
+
+      leaf domain-name {
+        type string;
+	description "Domain name to be configured via DHCP";
+      }
+    }
+  }
+}

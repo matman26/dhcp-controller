@@ -1,0 +1,23 @@
+{% for pool, config in data['dhcp']['dhcp-pools'].items() %}
+ip dhcp pool {{ pool }}
+   {% if 'domain-name' in config %}
+   domain-name {{ config['domain-name'] }}
+   {% endif %}
+
+   {% if 'default-gateway' in config %}
+   default-router {{ config['default-gateway'] }}
+   {% endif %}
+
+   {% if 'lease-time' in config %}
+   lease {{ config['lease-time'] }}
+   {% endif %}
+
+   {% if 'network' in config and 'address' in config['network'] and 'mask' in config['network'] %}
+   network {{ config['network']['address'] }} {{ config['network']['mask'] }}
+   {% endif %}
+
+   {% if 'subnet' in config and 'prefix-length' in config['subnet'] %}
+   subnet prefix-length {{ config['subnet']['prefix-length'] }}
+   {% endif %}
+!
+{% endfor %}

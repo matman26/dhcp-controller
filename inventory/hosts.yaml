@@ -1,0 +1,21 @@
+---
+R1:
+  hostname: 192.168.122.2
+  username: cisco
+  password: cisco
+  port:     22
+  platform: cisco_ios
+  connection_options:
+    netmiko:
+      extras:
+        secret: 'cisco'
+R2:
+  hostname: 192.168.122.3
+  username: cisco
+  password: cisco
+  port:     22
+  platform: cisco_ios
+  connection_options:
+    netmiko:
+      extras:
+        secret: 'cisco'

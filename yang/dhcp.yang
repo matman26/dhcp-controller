@@ -1,6 +1,6 @@
 module dhcp {
   namespace "http://pnc.controller.com/dhcp";
-  prefix "dhpcd";
+  prefix "dhcpd";
 
   import ietf-inet-types {
     prefix "inet";
@@ -16,7 +16,7 @@ module dhcp {
   }
 
   container dhcp {
-    list dhcp-pool {
+    list dhcp-pools {
       key pool-name;
 
       leaf pool-name {
@@ -47,12 +47,20 @@ module dhcp {
       leaf lease-time {
         type union {
 	  type uint16 {
-	    range "0-365";
+	    range "0..365";
 	  }
 	  type enumeration {
 	    enum "infinite";
 	  }
 	}
+      }
+
+      leaf dns-server {
+        type union {
+	  type inet:ipv4-address;
+	  type string;
+	}
+	description "IPv4 Address or Hostname for DNS Server";
       }
 
       leaf default-gateway {

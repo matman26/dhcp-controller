@@ -1,0 +1,76 @@
+<doc>
+Reads the output from 'show running-config | section ip dhcp'
+
+IN ---
+ip dhcp pool SITE1
+   network 10.20.30.0 255.255.255.0
+   subnet prefix-length 24
+   domain-name TEST
+   default-router 192.168.1.1
+   dns-server 8.8.8.8
+   lease 22
+ip dhcp pool TOTO
+   lease infinite
+ip dhcp pool SITE
+
+
+OUT ---
+ {
+     "dhcp:dhcp": {
+         "dhcp-pools": [ 
+              {
+       	  "pool-name": "OFFICE",
+                 "default-gateway": "10.251.0.254",
+                 "domain-name": "OFFICE",
+                 "lease-time": 25,
+                 "network": {
+                     "address": "10.251.0.0",
+                     "mask": "255.255.255.0"
+                 },
+                 "subnet": {
+                     "prefix-length": 24
+                 }
+             },
+             {
+       	  "pool-name": "WAREHOUSE",
+                 "domain-name": "WAREHOUSE",
+                 "lease-time": "infinite",
+                 "network": {
+                     "address": "10.254.10.0",
+                     "mask": "255.255.255.0"
+                 }
+     	      },
+             {
+       	  "pool-name": "CORPORATE",
+                 "domain-name": "CORPORATE",
+     	          "default-gateway" : "192.168.25.100",
+                 "network": {
+                     "address": "10.252.0.0",
+                     "mask": "255.255.255.0"
+                 }
+             }
+         ]
+     }
+ }
+</doc>
+<macro>
+def string_or_int(data):
+  return int(data) if data.isnumeric() else data
+</macro>
+<group name="dhcp:dhcp">
+ <group name="dhcp-pools">
+  <group>
+ip dhcp pool {{ pool-name }}
+   <group name="network">
+   network {{ address | IP }} {{ mask | IP }}
+   </group>
+   <group name="subnet">
+   subnet prefix-length {{ prefix-length | to_int }}
+   </group>
+   dns-server {{ dns-server }}
+   domain-name {{ domain-name }}
+   default-router {{ default-gateway | IP }}
+   lease {{ lease-time | macro('string_or_int') }}
+  </group>
+ </group>
+</group>

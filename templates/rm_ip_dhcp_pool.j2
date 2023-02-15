@@ -1,29 +1,32 @@
-{% if 'dhcp' in data %}
 {% for pool, config in data['dhcp']['dhcp-pools'].items() %}
+  {% if config == {} %}
+no ip dhcp pool {{ pool }}
+!
+  {% else %}
 ip dhcp pool {{ pool }}
    {% if 'domain-name' in config %}
-   domain-name {{ config['domain-name'] }}
+   no domain-name {{ config['domain-name'] }}
    {% endif %}
 
    {% if 'default-gateway' in config %}
-   default-router {{ config['default-gateway'] }}
+   no default-router {{ config['default-gateway'] }}
    {% endif %}
 
    {% if 'lease-time' in config %}
-   lease {{ config['lease-time'] }}
+   no lease {{ config['lease-time'] }}
    {% endif %}
 
    {% if 'dns-server' in config %}
-   dns-server {{ config['dns-server'] }}
+   no dns-server {{ config['dns-server'] }}
    {% endif %}
 
    {% if 'network' in config and 'address' in config['network'] and 'mask' in config['network'] %}
-   network {{ config['network']['address'] }} {{ config['network']['mask'] }}
+   no network {{ config['network']['address'] }} {{ config['network']['mask'] }}
    {% endif %}
 
    {% if 'subnet' in config and 'prefix-length' in config['subnet'] %}
-   subnet prefix-length {{ config['subnet']['prefix-length'] }}
+   no subnet prefix-length {{ config['subnet']['prefix-length'] }}
    {% endif %}
 !
+ {% endif %}
 {% endfor %}
-{% endif %}

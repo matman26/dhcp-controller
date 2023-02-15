@@ -7,6 +7,7 @@ ip dhcp pool SITE1
    subnet prefix-length 24
    domain-name TEST
    default-router 192.168.1.1
+   dns-server 8.8.8.8
    lease 22
 ip dhcp pool TOTO
    lease infinite
@@ -25,6 +26,7 @@ OUT ---
 	'subnet': {
 	  'prefix-length': 24
 	},
+	'dns-server': '8.8.8.8',
 	'domain-name': 'TEST',
 	'default-gateway': '192.168.1.1',
 	'lease': 22
@@ -42,7 +44,7 @@ OUT ---
 def string_or_int(data):
   return int(data) if data.isnumeric() else data
 </macro>
-<group name="dhcp">
+<group name="dhcp:dhcp">
  <group name="dhcp-pools">
   <group name="{{pool-name}}">
 ip dhcp pool {{ pool-name }}
@@ -52,6 +54,7 @@ ip dhcp pool {{ pool-name }}
    <group name="subnet">
    subnet prefix-length {{ prefix-length | to_int }}
    </group>
+   dns-server {{ dns-server }}
    domain-name {{ domain-name }}
    default-router {{ default-gateway | IP }}
    lease {{ lease-time | macro('string_or_int') }}
